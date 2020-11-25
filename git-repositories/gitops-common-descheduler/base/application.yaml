@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: descheduler-service
+  namespace: gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kube-system
+  source:
+    repoURL: https://kubernetes-sigs.github.io/descheduler/
+    chart: descheduler-helm-chart
+    targetRevision: 0.19.0
+    helm:
+      values: |
+        schedule: "*/10 * * * *"
+        priorityClassName: medium-priority
+        deschedulerPolicy:
+          strategies:
+            RemoveDuplicates:
+              enabled: false
+            LowNodeUtilization:
+              enabled: false
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

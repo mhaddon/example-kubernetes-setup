@@ -1,0 +1,7 @@
+- op: add
+  path: /spec/commonName
+  value: my-app.aws.haddon.me
+- op: add
+  path: /spec/dnsNames
+  value:
+  - my-app.aws.haddon.me

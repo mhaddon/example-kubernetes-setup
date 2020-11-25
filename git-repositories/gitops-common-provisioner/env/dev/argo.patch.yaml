@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jaeger
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-jaeger/env/dev/'
+    targetRevision: master
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-prometheus/env/dev/'
+    targetRevision: master
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-argocd/env/dev/'
+    targetRevision: master
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metrics-server
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-metrics-server/env/dev/'
+    targetRevision: master
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reloader
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-reloader/env/dev/'
+    targetRevision: master
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: network-debugger
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-network-debugger/env/dev/'
+    targetRevision: master
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: descheduler
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-descheduler/env/dev/'
+    targetRevision: master

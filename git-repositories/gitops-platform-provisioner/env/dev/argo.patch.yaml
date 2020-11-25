@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-application-domain
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-myenvironment-provisioner/env/dev/'
+    targetRevision: master
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: common-provisioner
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-common-provisioner/env/dev/'
+    targetRevision: master

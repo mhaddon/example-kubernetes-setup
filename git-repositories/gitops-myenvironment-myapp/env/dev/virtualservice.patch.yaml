@@ -1,0 +1,4 @@
+- op: add
+  path: /spec/hosts
+  value:
+    - my-app.aws.haddon.me

@@ -1,0 +1,92 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  components:
+    ingressGateways:
+      - name: istio-ingressgateway
+        enabled: true
+        label:
+          app: istio-ingressgateway
+          istio: ingressgateway
+        k8s:
+          serviceAnnotations:
+            service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+            service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "Name=istio-ingressgateway"
+          hpaSpec:
+            minReplicas: 3
+          overlays:
+            - apiVersion: v1
+              kind: Service
+              name: istio-ingressgateway
+              patches:
+                - path: spec.ports
+                  value:
+                    - name: status-port
+                      port: 15020
+                      targetPort: 15020
+                    - name: http2
+                      port: 80
+                      targetPort: 80
+                    - name: https
+                      port: 443
+                      targetPort: 443
+      - name: istio-internal-ingressgateway
+        enabled: true
+        label:
+          app: istio-internal-ingressgateway
+          istio: internal-ingressgateway
+        k8s:
+          serviceAnnotations:
+            service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+            service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+            service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "Name=istio-internal-ingressgateway"
+          hpaSpec:
+            minReplicas: 3
+          overlays:
+            - apiVersion: v1
+              kind: Service
+              name: istio-internal-ingressgateway
+              patches:
+                - path: spec.ports
+                  value:
+                    - name: status-port
+                      port: 15020
+                      targetPort: 15020
+                    - name: http2
+                      port: 80
+                      targetPort: 80
+                    - name: https
+                      port: 443
+                      targetPort: 443
+    pilot:
+      enabled: true
+      k8s:
+        hpaSpec:
+          minReplicas: 3
+        overlays:
+          - apiVersion: policy/v1beta1
+            kind: PodDisruptionBudget
+            name: istiod
+            patches:
+              - path: spec.selector.matchLabels
+                value:
+                  app: istiod
+                  istio: pilot
+  values:
+    meshConfig:
+      accessLogFile: "/dev/stdout"
+      accessLogEncoding: "JSON"
+    global:
+      tracer:
+        zipkin:
+          address: "zipkin.istio-system.svc.cluster.local:9411"
+      logAsJson: true
+      controlPlaneSecurityEnabled: true
+    gateways:
+      istio-ingressgateway:
+        runAsRoot: true #todo phase out: https://istio.io/latest/news/releases/1.7.x/announcing-1.7/upgrade-notes/
+        sds:
+          enabled: true
+    sidecarInjectorWebhook:
+      rewriteAppHTTPProbe: true
+

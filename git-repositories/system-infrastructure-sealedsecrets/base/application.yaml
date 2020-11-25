@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sealed-secrets
+  namespace: gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kube-system
+  source:
+    repoURL: https://kubernetes-charts.storage.googleapis.com/
+    chart: sealed-secrets
+    targetRevision: 1.10.3
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

@@ -1,0 +1,8 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: standard-priority
+value: 10000
+preemptionPolicy: Never
+globalDefault: false
+description: "This priority class should be used for databases & critical long-lived service pods only. It will also not kill any lower priority pods, just have priority in scheduling."

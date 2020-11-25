@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1alpha3
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+  namespace: cert-manager
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory # https://letsencrypt.org/docs/staging-environment/
+    email: recruitment.mhaddon@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt
+    solvers:
+      - dns01:
+          route53:
+            region: eu-west-1

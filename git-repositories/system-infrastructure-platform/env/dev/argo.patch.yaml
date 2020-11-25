@@ -1,0 +1,9 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-provisioner
+  namespace: gitops
+spec:
+  source:
+    path: 'git-repositories/gitops-platform-provisioner/env/dev/'
+    targetRevision: master

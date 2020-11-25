@@ -1,0 +1,3 @@
+- op: add
+  path: /spec/acme/solvers/0/dns01/route53/hostedZoneID
+  value: ${PUBLIC_HOSTED_ZONE_ID}

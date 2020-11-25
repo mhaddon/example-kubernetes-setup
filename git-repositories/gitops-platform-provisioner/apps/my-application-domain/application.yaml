@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-application-domain
+  namespace: gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: my-application-domain
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'https://github.com/mhaddon/example-kubernetes-setup.git'
+  project: default # todo this should be restricted
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: Application
+      jsonPointers:
+        - /spec/syncPolicy

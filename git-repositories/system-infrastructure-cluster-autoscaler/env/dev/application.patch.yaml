@@ -1,0 +1,13 @@
+- op: add
+  path: /spec/source/helm
+  value:
+    values: |
+      autoDiscovery:
+        clusterName: ${CLUSTER_NAME}
+      cloudProvider: aws
+      replicaCount: 1
+      priorityClassName: high-priority
+      awsRegion: eu-west-1
+      extraArgs:
+        skip-nodes-with-local-storage: false
+        expander: least-waste

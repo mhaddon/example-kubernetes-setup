@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-app
+          image: my-app
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "125m"
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+          envFrom:
+            - configMapRef:
+                name: my-app-configmap
+            - secretRef:
+                name: my-app-secret
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: 1
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+
+# todo there is some compatibility issue with Argo Rollout and the new version of Kubernetes. Have not had the time to properly investigate.
+
+#apiVersion: argoproj.io/v1alpha1
+#kind: Rollout
+#metadata:
+#  name: my-app
+#spec:
+#  replicas: 3
+#  revisionHistoryLimit: 2
+#  selector:
+#    matchLabels:
+#      app: my-app
+#  template:
+#    metadata:
+#      labels:
+#        app: my-app
+#    spec:
+#      containers:
+#        - name: my-app
+#          image: my-app
+#          ports:
+#            - name: http
+#              containerPort: 8080
+#              protocol: TCP
+#          resources:
+#            requests:
+#              memory: "64Mi"
+#              cpu: "125m"
+#            limits:
+#              memory: "128Mi"
+#              cpu: "250m"
+#          envFrom:
+#            - configMapRef:
+#                name: my-app-configmap
+#            - secretRef:
+#                name: my-app-secret
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#            initialDelaySeconds: 30
+#            periodSeconds: 10
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#            failureThreshold: 1
+#            initialDelaySeconds: 5
+#            periodSeconds: 5
+#  strategy:
+#    canary:
+#      stableService: my-app
+#      canaryService: my-app-canary
+#      trafficRouting:
+#        istio:
+#          virtualService:
+#            name: my-app
+#            routes:
+#              - primary
+#      steps:
+#        - setWeight: 20
+#        - pause: {}
+#        - setWeight: 40
+#        - pause: {duration: 10}
+#        - setWeight: 60
+#        - pause: {duration: 10}
+#        - setWeight: 80
+#        - pause: {duration: 10}

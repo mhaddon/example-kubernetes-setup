@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  env: dev
+
+bases:
+  - ../../base
+
+patchesJson6902:
+  - target:
+      group: networking.istio.io
+      version: v1beta1
+      kind: Gateway
+      name: argocd
+    path: gateway.patch.yaml
+  - target:
+      group: cert-manager.io
+      version: v1alpha3
+      kind: Certificate
+      name: argocd
+      namespace: istio-system
+    path: certificate.patch.yaml
+  - target:
+      group: networking.istio.io
+      version: v1beta1
+      kind: VirtualService
+      name: argocd
+    path: virtualservice.patch.yaml

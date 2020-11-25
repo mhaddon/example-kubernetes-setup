@@ -1,0 +1,7 @@
+- op: add
+  path: /spec/commonName
+  value: argocd.aws.haddon.me
+- op: add
+  path: /spec/dnsNames
+  value:
+  - argocd.aws.haddon.me

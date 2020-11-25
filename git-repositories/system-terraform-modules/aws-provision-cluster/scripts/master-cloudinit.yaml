@@ -1,0 +1,18 @@
+#cloud-config
+#
+write_files:
+  - encoding: gz+b64
+    content: ${calico_yaml}
+    owner: root:root
+    path: /tmp/calico.yaml
+    permissions: '0664'
+  - encoding: gz+b64
+    content: ${istio_yaml}
+    owner: root:root
+    path: /tmp/istio.yaml
+    permissions: '0664'
+  - encoding: gz+b64
+    content: ${provision_sh}
+    owner: root:root
+    path: /tmp/provision.sh
+    permissions: '0555'

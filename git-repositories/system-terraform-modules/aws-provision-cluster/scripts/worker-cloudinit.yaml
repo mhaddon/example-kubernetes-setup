@@ -1,0 +1,8 @@
+#cloud-config
+#
+write_files:
+  - encoding: gz+b64
+    content: ${provision_sh}
+    owner: root:root
+    path: /tmp/provision.sh
+    permissions: '0555'
