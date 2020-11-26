@@ -13,6 +13,7 @@ spec:
       labels:
         app: network-debugger
     spec:
+      serviceAccountName: network-debugger
       containers:
       - name: network-debugger
         image: nicolaka/netshoot:latest

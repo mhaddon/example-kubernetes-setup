@@ -55,7 +55,7 @@ metadata:
   namespace: gitops
 spec:
   source:
-    path: 'git-repositories/gitops-common-network-debugger/env/dev/'
+    path: 'git-repositories/gitops-common-networkdebugger/env/dev/'
     targetRevision: master
 ---
 apiVersion: argoproj.io/v1alpha1
